@@ -529,46 +529,38 @@ h1 {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    
     renderer.setSize(container.clientWidth, 450);
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // 1. Solid Black Cube
+    // 1. Black Cube with Neon Edges
     const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
-    const material = new THREE.MeshStandardMaterial({ 
-        color: 0x000000, 
-        roughness: 0, 
-        metalness: 1 
-    });
-    const cube = new THREE.Mesh(geometry, material);
+    const cube = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1 }));
+    cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: 0x00ffff })));
     scene.add(cube);
 
-    // 2. Glowing Edges (Ye cheez isay show karwaye gi!)
-    const edges = new THREE.EdgesGeometry(geometry);
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, linewidth: 2 }); // Cyan glow edges
-    const wireframe = new THREE.LineSegments(edges, lineMaterial);
-    cube.add(wireframe);
+    // 2. 3000 Particles (Sitare)
+    const pCount = 3000;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for(let i=0; i<pCount*3; i++) { pPos[i] = (Math.random() - 0.5) * 15; }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.03, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(particles);
 
-    // 3. Super Bright Lights
-    const pLight = new THREE.PointLight(0xffffff, 10, 50);
-    pLight.position.set(5, 5, 5);
-    scene.add(pLight);
-
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambient);
-
+    // 3. Lights & Animation
+    scene.add(new THREE.PointLight(0xffffff, 10, 50), new THREE.AmbientLight(0xffffff, 0.5));
     camera.position.z = 8;
 
     function animate() {
         requestAnimationFrame(animate);
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
+        particles.rotation.y += 0.001; // Sitaron ki movement
         renderer.render(scene, camera);
     }
     animate();
 
-    // Interaction
     window.addEventListener('mousemove', (e) => {
         cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
         cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
