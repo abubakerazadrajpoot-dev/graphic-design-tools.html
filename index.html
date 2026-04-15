@@ -587,4 +587,42 @@ h1 {
     }
     animate();
 </script>
+    <div id="ai-guide" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif;">
+    <div id="ai-bubble" style="background: rgba(0, 0, 0, 0.8); border: 1px solid #00ffff; backdrop-filter: blur(10px); color: white; padding: 15px; border-radius: 15px 15px 0 15px; margin-bottom: 10px; width: 220px; display: none; box-shadow: 0 0 15px rgba(0,255,255,0.3);">
+        <p id="ai-text" style="margin: 0; font-size: 13px; line-height: 1.4;"></p>
+    </div>
+    
+    <div onclick="toggleAIGuide()" style="width: 55px; height: 55px; background: #000; border: 2px solid #00ffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px #00ffff;">
+        <span style="color: #00ffff; font-weight: bold; font-size: 14px; letter-spacing: 1px;">AI</span>
+    </div>
+</div>
+
+<script>
+    const aiMessages = [
+        "Main Abubakar ka AI hoon. Kya help chahiye?",
+        "Niche scroll karke 3D Cube check karein!",
+        "Tools use karne ke liye Login lazmi hai.",
+        "Hamare Logo Maker tools bilkul free hain."
+    ];
+
+    let msgIndex = 0;
+    const bubble = document.getElementById('ai-bubble');
+    const textEl = document.getElementById('ai-text');
+
+    function toggleAIGuide() {
+        if (bubble.style.display === 'none') {
+            bubble.style.display = 'block';
+            textEl.innerText = aiMessages[msgIndex];
+            msgIndex = (msgIndex + 1) % aiMessages.length;
+        } else {
+            bubble.style.display = 'none';
+        }
+    }
+
+    // Auto-show after 4 seconds
+    setTimeout(() => {
+        bubble.style.display = 'block';
+        textEl.innerText = "Welcome Master! Main Abubakar Design Hub ka Guide hoon.";
+    }, 4000);
+</script>
 </html>
