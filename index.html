@@ -340,6 +340,20 @@ h1 {
             <div id="colorValue" style="margin-top: 20px; font-size: 1.2em; font-weight: bold; color: #333;"></div>
         </div>
     </div>
+            <div id="login-container" style="background: #1a1a1a; padding: 30px; border-radius: 20px; margin-top: 40px; border: 1px solid #333; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <h2 style="color: #00ffff; margin-bottom: 20px; font-family: sans-serif; letter-spacing: 2px;">MASTER LOGIN</h2>
+            
+            <input type="email" id="user-email" placeholder="Enter Email" style="width: 90%; max-width: 350px; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #000; color: white; outline: none;">
+            
+            <input type="password" id="user-pass" placeholder="Enter Password" style="width: 90%; max-width: 350px; padding: 12px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #444; background: #000; color: white; outline: none;">
+            
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <button onclick="handleLogin()" style="background: #00ffff; color: #000; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; min-width: 120px;">LOGIN</button>
+                
+                <button onclick="handleSignup()" style="background: transparent; color: #00ffff; border: 2px solid #00ffff; padding: 10px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; min-width: 120px;">SIGN UP</button>
+            </div>
+            <p id="auth-status" style="color: #888; margin-top: 15px; font-size: 0.9em;"></p>
+            </div>
 
     <script>
         const tools = [
