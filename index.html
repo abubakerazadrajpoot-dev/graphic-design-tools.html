@@ -508,48 +508,72 @@ h1 {
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<div id="canvas-container" style="width: 100%; height: 300px; margin-top: 20px; background: transparent;"></div>
+<div id="canvas-container" style="width: 100%; height: 350px; margin-top: 20px; background: transparent; display: flex; justify-content: center; align-items: center;"></div>
 
 <script>
+    const container = document.getElementById('canvas-container');
+    const width = container.clientWidth || window.innerWidth;
+    const height = 350;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 300, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     
-    const container = document.getElementById('canvas-container');
-    renderer.setSize(container.clientWidth, 300);
+    renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    // Box Geometry (Matte Black Cube)
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    // Box Geometry (Beautiful Neon Cyan Cube)
+    const geometry = new THREE.BoxGeometry(2.5, 2.5, 2.5); // Slightly larger
     const material = new THREE.MeshStandardMaterial({ 
-        color: 0x111111, 
-        roughness: 0.3, 
-        metalness: 0.8 
+        color: 0x00ffff, // Vivid Cyan Color
+        roughness: 0.1, 
+        metalness: 0.9,
+        emissive: 0x001111 // Subtle internal glow
     });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // Lights for 3D effect
-    const light = new THREE.PointLight(0xffffff, 1, 100);
+    // Enhanced Lights to make it "POPPY"
+    const light = new THREE.PointLight(0xffffff, 1.5, 100);
     light.position.set(10, 10, 10);
     scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040, 2));
+    
+    // Key light to make the edges sharp
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2);
+    keyLight.position.set(-10, -10, 10);
+    scene.add(keyLight);
 
-    camera.position.z = 5;
+    // Warm ambient to add depth
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2)); 
 
-    // Animation Loop
+    camera.position.z = 6; // Move camera back slightly
+
+    // Animation Loop (Smoother and faster rotation)
     function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
+        cube.rotation.x += 0.005;
         cube.rotation.y += 0.01;
         renderer.render(scene, camera);
     }
     animate();
 
-    // Mouse/Touch Interaction
-    window.addEventListener('mousemove', (e) => {
-        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
-        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
-    });
+    // Smoother Interaction for touch and mouse
+    let mouseX = 0, mouseY = 0;
+    function onPointerMove(e) {
+        let x, y;
+        if (e.touches) {
+            x = e.touches[0].clientX;
+            y = e.touches[0].clientY;
+        } else {
+            x = e.clientX;
+            y = e.clientY;
+        }
+        mouseX = (x / window.innerWidth) * 2 - 1;
+        mouseY = -(y / window.innerHeight) * 2 + 1;
+        cube.rotation.y = mouseX * (Math.PI / 2);
+        cube.rotation.x = -mouseY * (Math.PI / 4);
+    }
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove);
 </script>
 </html>
