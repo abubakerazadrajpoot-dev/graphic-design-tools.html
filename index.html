@@ -286,7 +286,122 @@ h1 {
 
 @keyframes glow {
     from { text-shadow: 0 0 5px #4facfe; }
-    to { text-shadow: 0 0 15px #00f2fe; }
+    to { <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    
+    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+
+    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
+        <h1 id="main-title" style="color: #00ffff !important; font-size: 3rem; font-family: sans-serif; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px #00ffff; opacity: 0; transform: translateY(30px);">
+            ABUBAKAR
+        </h1>
+        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 5px; margin-top: 10px; opacity: 0; transform: translateY(20px);">
+            DESIGN HUB
+        </p>
+        
+        <div id="loading-bar-container" style="width: 200px; height: 2px; background: #222; margin: 30px auto; overflow: hidden;">
+            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 10px #00ffff;"></div>
+        </div>
+    </div>
+</div>
+<div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    
+    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+
+    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
+        <h1 id="main-title" style="color: #00ffff !important; font-size: 3rem; font-family: sans-serif; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px #00ffff; opacity: 0; transform: translateY(30px);">
+            ABUBAKAR
+        </h1>
+        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 5px; margin-top: 10px; opacity: 0; transform: translateY(20px);">
+            DESIGN HUB
+        </p>
+        
+        <div id="loading-bar-container" style="width: 200px; height: 2px; background: #222; margin: 30px auto; overflow: hidden;">
+            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 10px #00ffff;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    // 1. Three.js Scene Setup
+    const iScene = new THREE.Scene();
+    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    iRenderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
+
+    // 2. Stars Background
+    const starGeo = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(4000 * 3);
+    for(let i=0; i<12000; i++) { starPositions[i] = (Math.random() - 0.5) * 60; }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.07 });
+    const stars = new THREE.Points(starGeo, starMat);
+    iScene.add(stars);
+
+    iCamera.position.z = 10;
+
+    function animateIntro() {
+        requestAnimationFrame(animateIntro);
+        stars.rotation.y += 0.001;
+        iRenderer.render(iScene, iCamera);
+    }
+    animateIntro();
+
+    // 3. GSAP Animation (Shows text then hides intro)
+    const tl = gsap.timeline();
+    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.2 })
+      .to("#sub-title", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
+      .to("#loading-bar", { width: "100%", duration: 2 })
+      .to("#intro-screen", { 
+          opacity: 0, 
+          duration: 1, 
+          onComplete: () => { 
+              document.getElementById('intro-screen').style.display = 'none'; 
+          } 
+      });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    // 1. Three.js Scene Setup
+    const iScene = new THREE.Scene();
+    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    iRenderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
+
+    // 2. Stars Background
+    const starGeo = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(4000 * 3);
+    for(let i=0; i<12000; i++) { starPositions[i] = (Math.random() - 0.5) * 60; }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.07 });
+    const stars = new THREE.Points(starGeo, starMat);
+    iScene.add(stars);
+
+    iCamera.position.z = 10;
+
+    function animateIntro() {
+        requestAnimationFrame(animateIntro);
+        stars.rotation.y += 0.001;
+        iRenderer.render(iScene, iCamera);
+    }
+    animateIntro();
+
+    // 3. GSAP Animation (Shows text then hides intro)
+    const tl = gsap.timeline();
+    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.2 })
+      .to("#sub-title", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
+      .to("#loading-bar", { width: "100%", duration: 2 })
+      .to("#intro-screen", { 
+          opacity: 0, 
+          duration: 1, 
+          onComplete: () => { 
+              document.getElementById('intro-screen').style.display = 'none'; 
+          } 
+      });
+</script>
+        text-shadow: 0 0 15px #00f2fe; }
 }
         
 
@@ -298,74 +413,7 @@ h1 {
     </style>
 </head>
 <body>
-    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s ease-in-out;">
     
-    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-
-    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
-        <h1 id="main-title" style="color: #00ffff; font-size: 3rem; font-family: 'Orbitron', sans-serif; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px #00ffff; opacity: 0; transform: translateY(30px);">
-            ABUBAKAR
-        </h1>
-        <p id="sub-title" style="color: white; font-size: 1.2rem; letter-spacing: 5px; margin-top: 10px; opacity: 0; transform: translateY(20px);">
-            DESIGN HUB
-        </p>
-        <div id="loading-bar-container" style="width: 200px; height: 2px; background: #222; margin: 30px auto; overflow: hidden;">
-            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 10px #00ffff;"></div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-    // Intro 3D Scene
-    const iScene = new THREE.Scene();
-    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    iRenderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
-
-    // Add thousands of floating points for space feel
-    const starGeo = new THREE.BufferGeometry();
-    const starCount = 5000;
-    const starPositions = new Float32Array(starCount * 3);
-    for(let i=0; i<starCount*3; i++) { starPositions[i] = (Math.random() - 0.5) * 50; }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.05, transparent: true });
-    const stars = new THREE.Points(starGeo, starMat);
-    iScene.add(stars);
-
-    iCamera.position.z = 10;
-
-    function animateIntro() {
-        requestAnimationFrame(animateIntro);
-        stars.rotation.y += 0.002;
-        iCamera.position.z -= 0.02; // Slow zoom in effect
-        iRenderer.render(iScene, iCamera);
-    }
-    animateIntro();
-
-    // GSAP Cinematic Animation
-    const tl = gsap.timeline();
-
-    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out" })
-      .to("#sub-title", { opacity: 1, y: 0, duration: 1, ease: "power4.out" }, "-=0.8")
-      .to("#loading-bar", { width: "100%", duration: 2, ease: "none" })
-      .to("#intro-screen", { 
-          clipPath: "circle(0% at 50% 50%)", 
-          duration: 1.5, 
-          ease: "power4.inOut",
-          onComplete: () => {
-              document.getElementById('intro-screen').style.display = 'none';
-          }
-      });
-
-    // Interaction for stars
-    window.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 2;
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
-        gsap.to(stars.rotation, { x: y * 0.2, y: x * 0.2, duration: 2 });
-    });
-</script>
     <div class="container">
         <img src="Pubg.jpg" alt="PUBG" style="width: 100%; max-width: 600px; display: block; margin: 0 auto 20px auto; border-radius: 15px;">
         <header>
