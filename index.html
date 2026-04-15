@@ -286,122 +286,7 @@ h1 {
 
 @keyframes glow {
     from { text-shadow: 0 0 5px #4facfe; }
-    to { <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    
-    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-
-    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
-        <h1 id="main-title" style="color: #00ffff !important; font-size: 3rem; font-family: sans-serif; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px #00ffff; opacity: 0; transform: translateY(30px);">
-            ABUBAKAR
-        </h1>
-        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 5px; margin-top: 10px; opacity: 0; transform: translateY(20px);">
-            DESIGN HUB
-        </p>
-        
-        <div id="loading-bar-container" style="width: 200px; height: 2px; background: #222; margin: 30px auto; overflow: hidden;">
-            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 10px #00ffff;"></div>
-        </div>
-    </div>
-</div>
-<div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    
-    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-
-    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
-        <h1 id="main-title" style="color: #00ffff !important; font-size: 3rem; font-family: sans-serif; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px #00ffff; opacity: 0; transform: translateY(30px);">
-            ABUBAKAR
-        </h1>
-        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 5px; margin-top: 10px; opacity: 0; transform: translateY(20px);">
-            DESIGN HUB
-        </p>
-        
-        <div id="loading-bar-container" style="width: 200px; height: 2px; background: #222; margin: 30px auto; overflow: hidden;">
-            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 10px #00ffff;"></div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-    // 1. Three.js Scene Setup
-    const iScene = new THREE.Scene();
-    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    iRenderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
-
-    // 2. Stars Background
-    const starGeo = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(4000 * 3);
-    for(let i=0; i<12000; i++) { starPositions[i] = (Math.random() - 0.5) * 60; }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.07 });
-    const stars = new THREE.Points(starGeo, starMat);
-    iScene.add(stars);
-
-    iCamera.position.z = 10;
-
-    function animateIntro() {
-        requestAnimationFrame(animateIntro);
-        stars.rotation.y += 0.001;
-        iRenderer.render(iScene, iCamera);
-    }
-    animateIntro();
-
-    // 3. GSAP Animation (Shows text then hides intro)
-    const tl = gsap.timeline();
-    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.2 })
-      .to("#sub-title", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
-      .to("#loading-bar", { width: "100%", duration: 2 })
-      .to("#intro-screen", { 
-          opacity: 0, 
-          duration: 1, 
-          onComplete: () => { 
-              document.getElementById('intro-screen').style.display = 'none'; 
-          } 
-      });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-    // 1. Three.js Scene Setup
-    const iScene = new THREE.Scene();
-    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    iRenderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
-
-    // 2. Stars Background
-    const starGeo = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(4000 * 3);
-    for(let i=0; i<12000; i++) { starPositions[i] = (Math.random() - 0.5) * 60; }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.07 });
-    const stars = new THREE.Points(starGeo, starMat);
-    iScene.add(stars);
-
-    iCamera.position.z = 10;
-
-    function animateIntro() {
-        requestAnimationFrame(animateIntro);
-        stars.rotation.y += 0.001;
-        iRenderer.render(iScene, iCamera);
-    }
-    animateIntro();
-
-    // 3. GSAP Animation (Shows text then hides intro)
-    const tl = gsap.timeline();
-    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.2 })
-      .to("#sub-title", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
-      .to("#loading-bar", { width: "100%", duration: 2 })
-      .to("#intro-screen", { 
-          opacity: 0, 
-          duration: 1, 
-          onComplete: () => { 
-              document.getElementById('intro-screen').style.display = 'none'; 
-          } 
-      });
-</script>
-        text-shadow: 0 0 15px #00f2fe; }
+    to { text-shadow: 0 0 15px #00f2fe; }
 }
         
 
@@ -413,7 +298,13 @@ h1 {
     </style>
 </head>
 <body>
-    
+    <div id="intro-screen">
+  <div id="intro-text">
+    <span class="word">ABUBAKAR</span>
+    <span class="word">DESIGN</span>
+    <span class="word">HUB</span>
+  </div>
+    </div>
     <div class="container">
         <img src="Pubg.jpg" alt="PUBG" style="width: 100%; max-width: 600px; display: block; margin: 0 auto 20px auto; border-radius: 15px;">
         <header>
@@ -631,173 +522,40 @@ h1 {
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<div id="canvas-container" style="width: 100%; height: 500px; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center;"></div>
+<div id="canvas-container" style="width: 100%; height: 450px; margin-top: 20px; background: #000; display: flex; justify-content: center; align-items: center;"></div>
 
 <script>
+    const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, 500);
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
+    
+    renderer.setSize(container.clientWidth, 450);
+    renderer.setClearColor(0x000000, 1);
+    container.appendChild(renderer.domElement);
 
-    // 1. Black Core Cube
-    const geometry = new THREE.BoxGeometry(3, 3, 3);
-    const material = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1, roughness: 0 });
+    // 1. Solid Black Cube
+    const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
+    const material = new THREE.MeshStandardMaterial({ 
+        color: 0x000000, 
+        roughness: 0, 
+        metalness: 1 
+    });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // 2. Cyan Glowing Edges
+    // 2. Glowing Edges (Ye cheez isay show karwaye gi!)
     const edges = new THREE.EdgesGeometry(geometry);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff });
-    const wireframe = new THREE.LineSegments(edges, lineMat);
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, linewidth: 2 }); // Cyan glow edges
+    const wireframe = new THREE.LineSegments(edges, lineMaterial);
     cube.add(wireframe);
 
-    // 3. Floating Particles (Starfield Effect)
-    const partGeo = new THREE.BufferGeometry();
-    const partCount = 4000;
-    const posArray = new Float32Array(partCount * 3);
+    // 3. Super Bright Lights
+    const pLight = new THREE.PointLight(0xffffff, 10, 50);
+    pLight.position.set(5, 5, 5);
+    scene.add(pLight);
 
-    for(let i=0; i < partCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 20;
-    }
-    partGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const partMat = new THREE.PointsMaterial({ size: 0.02, color: 0x00ffff, transparent: true, blending: THREE.AdditiveBlending });
-    const particleMesh = new THREE.Points(partGeo, partMat);
-    scene.add(particleMesh);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
 
-    // Lights
-    const light = new THREE.PointLight(0xffffff, 2, 50);
-    light.position.set(5, 5, 5);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x222222));
-
-    camera.position.z = 8;
-
-    // Mouse Movement
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth) - 0.5;
-        mouseY = (e.clientY / window.innerHeight) - 0.5;
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.005;
-        cube.rotation.y += 0.01;
-        
-h1 {
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 5px #4facfe; }
-    to { text-shadow: 0 0 15px #00f2fe; }
-}
-
-@media (max-width: 768px) {
-    h1 { font-size: 2.5rem; }
-    .tools-grid { grid-template-columns: 1fr; }
-    .search-box { flex-direction: column; }
-}
-</style>
-h1 {
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 5px #4facfe; }
-    to { text-shadow: 0 0 15px #00f2fe; }
-}
-
-@media (max-width: 768px) {
-    h1 { font-size: 2.5rem; }
-    .tools-grid { grid-template-columns: 1fr; }
-    .search-box { flex-direction: column; }
-}
-</style>
-</head>
-<body style="margin: 0; padding: 0; background: #000; overflow-x: hidden;">
-
-<div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
-        <h1 id="main-title" style="color: #00ffff !important; font-size: 3.5rem; font-family: sans-serif; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px #00ffff; opacity: 0; transform: translateY(30px); font-weight: bold;">ABUBAKAR</h1>
-        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 6px; margin-top: 10px; opacity: 0; transform: translateY(20px);">DESIGN HUB</p>
-        <div id="loading-bar-container" style="width: 200px; height: 3px; background: #222; margin: 30px auto; overflow: hidden; border-radius: 10px;">
-            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 15px #00ffff;"></div>
-        </div>
-    </div>
-</div>
-
-<div id="ai-guide" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif;">
-    <div id="ai-bubble" style="background: rgba(0, 0, 0, 0.8); border: 1px solid #00ffff; backdrop-filter: blur(10px); color: white; padding: 15px; border-radius: 15px 15px 0 15px; margin-bottom: 10px; width: 220px; display: none; box-shadow: 0 0 15px rgba(0,255,255,0.3);">
-        <p id="ai-text" style="margin: 0; font-size: 13px; line-height: 1.4;"></p>
-    </div>
-    <div onclick="toggleAIGuide()" style="width: 55px; height: 55px; background: #000; border: 2px solid #00ffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px #00ffff;">
-        <span style="color: #00ffff; font-weight: bold; font-size: 14px;">AI</span>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-<script>
-    // INTRO & BACKGROUND
-    const iScene = new THREE.Scene();
-    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    iRenderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
-
-    // Cube
-    const cubeGeo = new THREE.BoxGeometry(2, 2, 2);
-    const cubeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, wireframe: true });
-    const cube = new THREE.Mesh(cubeGeo, cubeMat);
-    iScene.add(cube);
-
-    // Stars/Particles
-    const starGeo = new THREE.BufferGeometry();
-    const starPos = new Float32Array(4000 * 3);
-    for(let i=0; i<12000; i++) { starPos[i] = (Math.random() - 0.5) * 60; }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.05 }));
-    iScene.add(stars);
-
-    iScene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    iCamera.position.z = 10;
-
-    let mX = 0, mY = 0;
-    document.addEventListener('mousemove', (e) => {
-        mX = (e.clientX / window.innerWidth) - 0.5;
-        mY = (e.clientY / window.innerHeight) - 0.5;
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01; cube.rotation.y += 0.01;
-        cube.rotation.y += mX * 0.05; cube.rotation.x += mY * 0.05;
-        stars.rotation.y += 0.001;
-        iRenderer.render(iScene, iCamera);
-    }
-    animate();
-
-    // GSAP Intro Logic
-    gsap.to("#main-title", { opacity: 1, y: 0, duration: 1.5 });
-    gsap.to("#sub-title", { opacity: 1, y: 0, duration: 1, delay: 0.5 });
-    gsap.to("#loading-bar", { width: "100%", duration: 2, onComplete: () => {
-        gsap.to("#intro-screen", { opacity: 0, duration: 1, onComplete: () => {
-            document.getElementById('intro-screen').style.display = 'none';
-        }});
-    }});
-
-    // AI Guide
-    const messages = ["Main Abubakar ka AI hoon.", "Niche 3D Cube check karein!", "Tools free hain!"];
-    function toggleAIGuide() {
-        const b = document.getElementById('ai-bubble');
-        b.style.display = b.style.display === 'none' ? 'block' : 'none';
-        document.getElementById('ai-text').innerText = messages[Math.floor(Math.random()*messages.length)];
-    }
-    setTimeout(() => { toggleAIGuide(); }, 4000);
-</script>
-</body>
-</html>
+    c
