@@ -506,4 +506,50 @@ h1 {
       .catch((error) => alert("Error: " + error.message));
   };
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<div id="canvas-container" style="width: 100%; height: 300px; margin-top: 20px; background: transparent;"></div>
+
+<script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 300, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    const container = document.getElementById('canvas-container');
+    renderer.setSize(container.clientWidth, 300);
+    container.appendChild(renderer.domElement);
+
+    // Box Geometry (Matte Black Cube)
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshStandardMaterial({ 
+        color: 0x111111, 
+        roughness: 0.3, 
+        metalness: 0.8 
+    });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Lights for 3D effect
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(10, 10, 10);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x404040, 2));
+
+    camera.position.z = 5;
+
+    // Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Mouse/Touch Interaction
+    window.addEventListener('mousemove', (e) => {
+        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
+        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
+    });
+</script>
 </html>
