@@ -685,35 +685,93 @@ h1 {
         cube.rotation.x += 0.005;
         cube.rotation.y += 0.01;
         
-        // Particles moving slowly
-        particleMesh.rotation.y += 0.001;
-        
-        // Interactive tilt
-        cube.rotation.y += mouseX * 0.1;
-        cube.rotation.x += mouseY * 0.1;
+h1 {
+    animation: glow 2s ease-in-out infinite alternate;
+}
 
-        renderer.render(scene, camera);
-    }
-    animate();
-</script>
-    <div id="ai-guide" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif;">
+@keyframes glow {
+    from { text-shadow: 0 0 5px #4facfe; }
+    to { text-shadow: 0 0 15px #00f2fe; }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .search-box { flex-direction: column; }
+}
+</style>
+</head>
+<body style="margin: 0; padding: 0; background: #000; overflow-x: hidden;">
+
+<div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+    <div id="intro-text-wrapper" style="position: relative; text-align: center; z-index: 10;">
+        <h1 id="main-title" style="color: #00ffff !important; font-size: 3.5rem; font-family: sans-serif; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px #00ffff; opacity: 0; transform: translateY(30px); font-weight: bold;">
+            ABUBAKAR
+        </h1>
+        <p id="sub-title" style="color: #ffffff !important; font-size: 1.2rem; letter-spacing: 6px; margin-top: 10px; opacity: 0; transform: translateY(20px); text-transform: uppercase;">
+            DESIGN HUB
+        </p>
+        <div id="loading-bar-container" style="width: 220px; height: 3px; background: #222; margin: 40px auto; overflow: hidden; border-radius: 10px;">
+            <div id="loading-bar" style="width: 0%; height: 100%; background: #00ffff; box-shadow: 0 0 15px #00ffff;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="ai-guide" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif;">
     <div id="ai-bubble" style="background: rgba(0, 0, 0, 0.8); border: 1px solid #00ffff; backdrop-filter: blur(10px); color: white; padding: 15px; border-radius: 15px 15px 0 15px; margin-bottom: 10px; width: 220px; display: none; box-shadow: 0 0 15px rgba(0,255,255,0.3);">
         <p id="ai-text" style="margin: 0; font-size: 13px; line-height: 1.4;"></p>
     </div>
-    
     <div onclick="toggleAIGuide()" style="width: 55px; height: 55px; background: #000; border: 2px solid #00ffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px #00ffff;">
         <span style="color: #00ffff; font-weight: bold; font-size: 14px; letter-spacing: 1px;">AI</span>
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
 <script>
+    // Intro Logic
+    const iScene = new THREE.Scene();
+    const iCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const iRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    iRenderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('intro-canvas').appendChild(iRenderer.domElement);
+
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(5000 * 3);
+    for(let i=0; i<15000; i++) { starPos[i] = (Math.random() - 0.5) * 70; }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.08 });
+    const stars = new THREE.Points(starGeo, starMat);
+    iScene.add(stars);
+    iCamera.position.z = 12;
+
+    function animateIntro() {
+        requestAnimationFrame(animateIntro);
+        stars.rotation.y += 0.0015;
+        iRenderer.render(iScene, iCamera);
+    }
+    animateIntro();
+
+    const tl = gsap.timeline();
+    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out" })
+      .to("#sub-title", { opacity: 1, y: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+      .to("#loading-bar", { width: "100%", duration: 2.5, ease: "none" })
+      .to("#intro-screen", { 
+          opacity: 0, 
+          duration: 1.2, 
+          onComplete: () => { 
+              document.getElementById('intro-screen').style.display = 'none'; 
+          } 
+      });
+
+    // AI Guide Logic
     const aiMessages = [
         "Main Abubakar ka AI hoon. Kya help chahiye?",
-        "Niche scroll karke 3D Cube check karein!",
-        "Tools use karne ke liye Login lazmi hai.",
-        "Hamare Logo Maker tools bilkul free hain."
+        "Hamare tools bilkul free hain.",
+        "Design Hub mein khush amdeed!"
     ];
-
     let msgIndex = 0;
     const bubble = document.getElementById('ai-bubble');
     const textEl = document.getElementById('ai-text');
@@ -728,10 +786,10 @@ h1 {
         }
     }
 
-    // Auto-show after 4 seconds
     setTimeout(() => {
         bubble.style.display = 'block';
         textEl.innerText = "Welcome Master! Main Abubakar Design Hub ka Guide hoon.";
-    }, 4000);
+    }, 4500);
 </script>
+</body>
 </html>
