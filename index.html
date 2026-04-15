@@ -558,4 +558,20 @@ h1 {
     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambient);
 
-    c
+    camera.position.z = 8;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Interaction
+    window.addEventListener('mousemove', (e) => {
+        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
+        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
+    });
+        </script>
+</html>
