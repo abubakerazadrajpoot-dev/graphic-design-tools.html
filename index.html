@@ -298,12 +298,12 @@ h1 {
     </style>
 </head>
 <body>
-    <div id="canvas-container" style="position: relative; width: 100%; height: 100vh; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-    <div id="intro-text" style="position: absolute; z-index: 10; text-align: center; pointer-events: none;">
-        <h1 style="color: #00ffff; font-size: 3.5rem; font-family: sans-serif; text-shadow: 0 0 20px #00ffff; margin: 0; letter-spacing: 8px;">
-            ABUBAKAR<br>DESIGN<br>HUB
-        </h1>
-    </div>
+    <div id="intro-screen">
+  <div id="intro-text">
+    <span class="word">ABUBAKAR</span>
+    <span class="word">DESIGN</span>
+    <span class="word">HUB</span>
+  </div>
     </div>
     <div class="container">
         <img src="Pubg.jpg" alt="PUBG" style="width: 100%; max-width: 600px; display: block; margin: 0 auto 20px auto; border-radius: 15px;">
@@ -487,43 +487,6 @@ h1 {
         // Initial render
         renderTools();
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-    const container = document.getElementById('canvas-container');
-    if(container) {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        container.appendChild(renderer.domElement);
-
-        // 1. 3D Cube
-        const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
-        const cube = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1 }));
-        cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: 0x00ffff })));
-        scene.add(cube);
-
-        // 2. 7000 Particles
-        const pCount = 7000;
-        const pGeo = new THREE.BufferGeometry();
-        const pPos = new Float32Array(pCount * 3);
-        for(let i=0; i<pCount*3; i++) { pPos[i] = (Math.random() - 0.5) * 20; }
-        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-        const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.02, transparent: true, blending: THREE.AdditiveBlending }));
-        scene.add(particles);
-
-        scene.add(new THREE.PointLight(0xffffff, 15, 50), new THREE.AmbientLight(0x222222));
-        camera.position.z = 8;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.005; cube.rotation.y += 0.005;
-            particles.rotation.y += 0.0005;
-            renderer.render(scene, camera);
-        }
-        animate();
-    }
-</script>
 </body>
     <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -565,46 +528,42 @@ h1 {
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, 450);
+    renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // 1. Black Core Cube with Neon Edges
+    // 1. Black Cube with Neon Edges
     const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
     const cube = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1 }));
     cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: 0x00ffff })));
     scene.add(cube);
 
-    // 2. 7000 Particles (Galaxy Background)
-    const pCount = 7000;
+    // 2. 3000 Particles (Sitare)
+    const pCount = 3000;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
-    for(let i=0; i<pCount*3; i++) { pPos[i] = (Math.random() - 0.5) * 20; }
+    for(let i=0; i<pCount*3; i++) { pPos[i] = (Math.random() - 0.5) * 15; }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.025, transparent: true, blending: THREE.AdditiveBlending }));
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.03, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     scene.add(particles);
 
-    // 3. Neon Lights
-    scene.add(new THREE.PointLight(0x00ffff, 15, 50), new THREE.AmbientLight(0x404040));
-    camera.position.z = 9;
-
-    let mX = 0, mY = 0;
-    window.addEventListener('mousemove', (e) => {
-        mX = (e.clientX - window.innerWidth / 2) * 0.002;
-        mY = (e.clientY - window.innerHeight / 2) * 0.002;
-    });
+    // 3. Lights & Animation
+    scene.add(new THREE.PointLight(0xffffff, 10, 50), new THREE.AmbientLight(0xffffff, 0.5));
+    camera.position.z = 8;
 
     function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.005;
-        cube.rotation.y += 0.005;
-        particles.rotation.y += 0.001;
-        
-        camera.position.x += (mX - camera.position.x) * 0.05;
-        camera.position.y += (-mY - camera.position.y) * 0.05;
-        camera.lookAt(scene.position);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        particles.rotation.y += 0.001; // Sitaron ki movement
         renderer.render(scene, camera);
     }
     animate();
-              </script>
+
+    window.addEventListener('mousemove', (e) => {
+        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
+        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
+    });
+        </script>
 </html>
