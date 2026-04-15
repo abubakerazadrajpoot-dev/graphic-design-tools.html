@@ -522,56 +522,69 @@ h1 {
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<div id="canvas-container" style="width: 100%; height: 450px; margin-top: 20px; background: #000; display: flex; justify-content: center; align-items: center;"></div>
+<div id="canvas-container" style="width: 100%; height: 500px; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center;"></div>
 
 <script>
-    const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    
-    renderer.setSize(container.clientWidth, 450);
-    renderer.setClearColor(0x000000, 1);
-    container.appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth, 500);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-    // 1. Solid Black Cube
-    const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
-    const material = new THREE.MeshStandardMaterial({ 
-        color: 0x000000, 
-        roughness: 0, 
-        metalness: 1 
-    });
+    // 1. Black Core Cube
+    const geometry = new THREE.BoxGeometry(3, 3, 3);
+    const material = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1, roughness: 0 });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // 2. Glowing Edges (Ye cheez isay show karwaye gi!)
+    // 2. Cyan Glowing Edges
     const edges = new THREE.EdgesGeometry(geometry);
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, linewidth: 2 }); // Cyan glow edges
-    const wireframe = new THREE.LineSegments(edges, lineMaterial);
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff });
+    const wireframe = new THREE.LineSegments(edges, lineMat);
     cube.add(wireframe);
 
-    // 3. Super Bright Lights
-    const pLight = new THREE.PointLight(0xffffff, 10, 50);
-    pLight.position.set(5, 5, 5);
-    scene.add(pLight);
+    // 3. Floating Particles (Starfield Effect)
+    const partGeo = new THREE.BufferGeometry();
+    const partCount = 4000;
+    const posArray = new Float32Array(partCount * 3);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambient);
+    for(let i=0; i < partCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 20;
+    }
+    partGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const partMat = new THREE.PointsMaterial({ size: 0.02, color: 0x00ffff, transparent: true, blending: THREE.AdditiveBlending });
+    const particleMesh = new THREE.Points(partGeo, partMat);
+    scene.add(particleMesh);
+
+    // Lights
+    const light = new THREE.PointLight(0xffffff, 2, 50);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x222222));
 
     camera.position.z = 8;
 
+    // Mouse Movement
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) - 0.5;
+        mouseY = (e.clientY / window.innerHeight) - 0.5;
+    });
+
     function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
+        cube.rotation.x += 0.005;
         cube.rotation.y += 0.01;
+        
+        // Particles moving slowly
+        particleMesh.rotation.y += 0.001;
+        
+        // Interactive tilt
+        cube.rotation.y += mouseX * 0.1;
+        cube.rotation.x += mouseY * 0.1;
+
         renderer.render(scene, camera);
     }
     animate();
-
-    // Interaction
-    window.addEventListener('mousemove', (e) => {
-        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
-        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
-    });
-        </script>
+</script>
 </html>
