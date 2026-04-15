@@ -508,60 +508,56 @@ h1 {
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<div id="canvas-container" style="width: 100%; height: 450px; margin-top: 20px; background: transparent; display: flex; justify-content: center; align-items: center;"></div>
+<div id="canvas-container" style="width: 100%; height: 450px; margin-top: 20px; background: #000; display: flex; justify-content: center; align-items: center;"></div>
 
 <script>
     const container = document.getElementById('canvas-container');
-    const width = container.clientWidth || window.innerWidth;
-    const height = 450; // Height thori barha di hai space ke liye
-
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     
-    renderer.setSize(width, height);
+    renderer.setSize(container.clientWidth, 450);
+    renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // Bada Cube Size (3.5 instead of 2.5)
+    // 1. Solid Black Cube
     const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
     const material = new THREE.MeshStandardMaterial({ 
-        color: 0x050505, 
-        roughness: 0.15, 
-        metalness: 0.85
+        color: 0x000000, 
+        roughness: 0, 
+        metalness: 1 
     });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // Extra Bright Lights edges ke liye
-    const light1 = new THREE.PointLight(0xffffff, 5, 60); 
-    light1.position.set(7, 7, 7);
-    scene.add(light1);
-    
-    const light2 = new THREE.PointLight(0xffffff, 4, 60);
-    light2.position.set(-7, -7, 7);
-    scene.add(light2);
+    // 2. Glowing Edges (Ye cheez isay show karwaye gi!)
+    const edges = new THREE.EdgesGeometry(geometry);
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, linewidth: 2 }); // Cyan glow edges
+    const wireframe = new THREE.LineSegments(edges, lineMaterial);
+    cube.add(wireframe);
 
-    const backLight = new THREE.PointLight(0xffffff, 3, 60);
-    backLight.position.set(0, 0, -10);
-    scene.add(backLight);
+    // 3. Super Bright Lights
+    const pLight = new THREE.PointLight(0xffffff, 10, 50);
+    pLight.position.set(5, 5, 5);
+    scene.add(pLight);
 
-    camera.position.z = 7; // Camera view adjust kiya
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+
+    camera.position.z = 8;
 
     function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.005;
-        cube.rotation.y += 0.008;
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
         renderer.render(scene, camera);
     }
     animate();
 
-    function onPointerMove(e) {
-        let x = e.touches ? e.touches[0].clientX : e.clientX;
-        let y = e.touches ? e.touches[0].clientY : e.clientY;
-        cube.rotation.y = ((x / window.innerWidth) * 2 - 1) * (Math.PI / 1.5);
-        cube.rotation.x = -((y / window.innerHeight) * 2 - 1) * (Math.PI / 3);
-    }
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-</script>
+    // Interaction
+    window.addEventListener('mousemove', (e) => {
+        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
+        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
+    });
+        </script>
 </html>
