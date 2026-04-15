@@ -474,4 +474,36 @@ h1 {
         renderTools();
     </script>
 </body>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDBpu9EUDVGYUgrWa3SZR-WSrfp_dI1moQ",
+    authDomain: "abubakar-design-hub.firebaseapp.com",
+    projectId: "abubakar-design-hub",
+    storageBucket: "abubakar-design-hub.firebasestorage.app",
+    messagingSenderId: "133547256107",
+    appId: "1:133547256107:web:7712b570a068bbd1b07d6e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+
+  window.handleLogin = () => {
+    const email = document.getElementById('user-email').value;
+    const pass = document.getElementById('user-pass').value;
+    signInWithEmailAndPassword(auth, email, pass)
+      .then(() => { alert("Login Success!"); location.reload(); })
+      .catch((error) => alert("Error: " + error.message));
+  };
+
+  window.handleSignup = () => {
+    const email = document.getElementById('user-email').value;
+    const pass = document.getElementById('user-pass').value;
+    createUserWithEmailAndPassword(auth, email, pass)
+      .then(() => { alert("Account Created! Now Login."); })
+      .catch((error) => alert("Error: " + error.message));
+  };
+    </script>
 </html>
