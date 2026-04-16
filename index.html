@@ -3,65 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dad's Memories</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>🎨 Free Graphic Design Tools</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --primary-gold: #D4AF37; --dark-bg: #0A0A0F; --text-light: #F0F0F0; }
-        body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: var(--text-light); overflow-x: hidden; }
-        
-        .preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--dark-bg); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: opacity 0.5s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .preloader.hidden { opacity: 0; pointer-events: none; }
-        .loader-ring { width: 60px; height: 60px; border: 4px solid rgba(212, 175, 55, 0.1); border-top: 4px solid var(--primary-gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .navbar { padding: 20px; text-align: center; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary-gold); }
+        body {
+            background: #000; /* Is se poori screen black ho jayegi */
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: rgba(20, 20, 20, 0.8); /* Dark background */
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 30px;
+    border: 1px solid #4facfe; /* Neon blue border */
+    box-shadow: 0 0 20px rgba(79, 172, 254, 0.2);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            display: flex;
+            gap: 15px;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 18px 25px;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        #searchInput:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .search-btn {
+            padding: 18px 30px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .tool-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .tool-card:hover::before {
+            left: 100%;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .tool-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tool-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .tool-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .tool-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #4ecdc4;
+            border: 2px solid #4ecdc4;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .color-picker {
+            margin: 40px 0;
+            text-align: center;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .color-input {
+            width: 100px;
+            height: 100px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .color-input:hover {
+            transform: scale(1.1);
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: white;
+            color: #333;
+            transform: translateY(-3px);
+        }
+        /* Cards Entrance Animation */
+.tool-card {
+    color: white;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+        #intro-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: black;
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+  animation: fadeOutIntro 1s ease 4s forwards;
+}
+#intro-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem; color: white;
+  display: flex; flex-direction: column; text-align: center;
+}
+.word {
+  opacity: 0; transform: translateY(20px);
+  animation: fadeInWord 1s ease forwards;
+  text-shadow: 0 0 15px #00d4ff;
+}
+.word:nth-child(1) { animation-delay: 0.5s; }
+.word:nth-child(2) { animation-delay: 1.5s; }
+.word:nth-child(3) { animation-delay: 2.5s; }
+@keyframes fadeInWord {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOutIntro {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+        }
+
+/* Logo Glow Animation */
+h1 {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px #4facfe; }
+    to { text-shadow: 0 0 15px #00f2fe; }
+}
         
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 40px 20px; }
-        .gallery-item { border-radius: 15px; overflow: hidden; height: 300px; border: 1px solid rgba(212,175,55,0.2); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .search-box { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
-
-    <div class="preloader" id="preloader">
-        <div class="loader-ring"></div>
-        <p style="margin-top:20px; color:var(--primary-gold);">Opening Gallery...</p>
+    <div id="intro-screen">
+  <div id="intro-text">
+    <span class="word">ABUBAKAR</span>
+    <span class="word">DESIGN</span>
+    <span class="word">HUB</span>
+  </div>
     </div>
+    <div class="container">
+            <h1>🎨 ABUBAKAR Design Hub</h1>
+            <p class="subtitle">Free tools, templates, mockups & resources for designers</p>
+        </header>
 
-    <nav class="navbar">
-        <div class="logo">📸 Dad's Memories</div>
-    </nav>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search tools... (Logo, Mockup, Color, Template)">
+            <button class="search-btn" onclick="searchTools()">🔍 Search</button>
+        </div>
 
-    <div class="gallery-grid" id="galleryGrid"></div>
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCategory('all')">All Tools</button>
+            <button class="category-btn" onclick="filterCategory('logo')">Logo Design</button>
+            <button class="category-btn" onclick="filterCategory('mockup')">Mockups</button>
+            <button class="category-btn" onclick="filterCategory('template')">Templates</button>
+            <button class="category-btn" onclick="filterCategory('color')">Colors</button>
+            <button class="category-btn" onclick="filterCategory('font')">Fonts</button>
+        </div>
+
+        <div class="tools-grid" id="toolsGrid">
+            <!-- Tools populated by JavaScript -->
+        </div>
+
+        <div class="color-picker">
+            <h3 style="margin-bottom: 20px; color: #333;">🎨 Quick Color Picker</h3>
+            <input type="color" class="color-input" value="#ff6b6b" onchange="updateColor(this.value)">
+            <input type="color" class="color-input" value="#4ecdc4" onchange="updateColor(this.value)">
+            <input type="color" class="color-input" value="#45b7d1" onchange="updateColor(this.value)">
+            <input type="color" class="color-input" value="#f9ca24" onchange="updateColor(this.value)">
+            <input type="color" class="color-input" value="#6c5ce7" onchange="updateColor(this.value)">
+            <div id="colorValue" style="margin-top: 20px; font-size: 1.2em; font-weight: bold; color: #333;"></div>
+        </div>
+    </div>
+            <div id="login-container" style="background: #1a1a1a; padding: 30px; border-radius: 20px; margin-top: 40px; border: 1px solid #333; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <h2 style="color: #00ffff; margin-bottom: 20px; font-family: sans-serif; letter-spacing: 2px;">LOGIN</h2>
+            
+            <input type="email" id="user-email" placeholder="Enter Email" style="width: 90%; max-width: 350px; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #000; color: white; outline: none;">
+            
+            <input type="password" id="user-pass" placeholder="Enter Password" style="width: 90%; max-width: 350px; padding: 12px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #444; background: #000; color: white; outline: none;">
+            
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <button onclick="handleLogin()" style="background: #00ffff; color: #000; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; min-width: 120px;">LOGIN</button>
+                
+                <button onclick="handleSignup()" style="background: transparent; color: #00ffff; border: 2px solid #00ffff; padding: 10px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; min-width: 120px;">SIGN UP</button>
+            </div>
+            <p id="auth-status" style="color: #888; margin-top: 15px; font-size: 0.9em;"></p>
+            </div>
 
     <script>
-        const images = [
-            { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500", title: "Nature" },
-            { src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500", title: "Lake" },
-            { src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500", title: "Mountain" }
+        const tools = [
+            {
+                id: 1, name: "Logo Maker", category: "logo",
+                desc: "Free AI logo generator with 1000+ templates", 
+                icon: "🎨", links: {
+                    use: "https://www.canva.com/create/logos/",
+                    download: "https://logomakr.com/"
+                }
+            },
+            {
+                id: 2, name: "Device Mockups", category: "mockup",
+                desc: "Free PSD mockups for phones, laptops & tablets", 
+                icon: "📱", links: {
+                    use: "https://mockups-design.com/",
+                    download: "https://www.mockupworld.co/"
+                }
+            },
+            {
+                id: 3, name: "Social Media Templates", category: "template",
+                desc: "Instagram, Facebook & Twitter post templates", 
+                icon: "📸", links: {
+                    use: "https://www.canva.com/social-graphics/templates/",
+                    download: "https://www.freepik.com/"
+                }
+            },
+            {
+                id: 4, name: "Color Palette Generator", category: "color",
+                desc: "Generate perfect color schemes instantly", 
+                icon: "🌈", links: {
+                    use: "https://coolors.co/",
+                    download: "https://colorhunt.co/"
+                }
+            },
+            {
+                id: 5, name: "Google Fonts", category: "font",
+                desc: "1000+ free professional fonts for your projects", 
+                icon: "🔤", links: {
+                    use: "https://fonts.google.com/",
+                    download: "https://fontjoy.com/"
+                }
+            },
+            {
+                id: 6, name: "Business Card Maker", category: "logo",
+                desc: "Professional business card templates & mockups", 
+                icon: "💳", links: {
+                    use: "https://www.canva.com/create/business-cards/",
+                    download: "https://placeit.net/business-card-mockups"
+                }
+            },
+            {
+                id: 7, name: "T-Shirt Mockups", category: "mockup",
+                desc: "Free apparel mockups for merchandise design", 
+                icon: "👕", links: {
+                    use: "https://smartmockups.com/tshirt-mockups",
+                    download: "https://www.mockupworld.co/free/"
+                }
+            },
+            {
+                id: 8, name: "Poster Templates", category: "template",
+                desc: "Event posters, flyers & banner templates", 
+                icon: "📜", links: {
+                    use: "https://www.canva.com/posters/templates/",
+                    download: "https://www.vecteezy.com/free-vector/poster"
+                }
+            }
         ];
 
-        // Sirf 1 second baad loading khatam ho jayegi
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hidden');
-            }, 1000); 
+        function renderTools(toolList = tools) {
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = '';
+
+            toolList.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.innerHTML = `
+                    <div class="tool-icon">${tool.icon}</div>
+                    <div class="tool-title">${tool.name}</div>
+                    <div class="tool-desc">${tool.desc}</div>
+                    <div class="tool-links">
+                        <a href="${tool.links.use}" target="_blank" class="btn-primary">Use Now</a>
+                        <a href="${tool.links.download}" target="_blank" class="btn-secondary">Download</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function searchTools() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = tools.filter(tool => 
+                tool.name.toLowerCase().includes(query) || 
+                tool.desc.toLowerCase().includes(query) ||
+                tool.category.includes(query)
+            );
+            renderTools(filtered);
+        }
+
+        function filterCategory(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                renderTools(tools);
+            } else {
+                const filtered = tools.filter(tool => tool.category === category);
+                renderTools(filtered);
+            }
+        }
+
+        function updateColor(color) {
+            document.getElementById('colorValue').textContent = `Current Color: ${color} 📋 Copy HEX`;
+            document.getElementById('colorValue').style.color = color;
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchTools();
         });
 
-        const grid = document.getElementById('galleryGrid');
-        grid.innerHTML = images.map(img => `
-            <div class="gallery-item">
-                <img src="${img.src}" alt="${img.title}">
-            </div>
-        `).join('');
+        document.getElementById('colorValue').addEventListener('click', function() {
+            const color = this.textContent.match(/#[\w\d]{6}/)[0];
+            navigator.clipboard.writeText(color);
+            this.textContent = `Copied ${color} ✅`;
+            setTimeout(() => {
+                this.textContent = `Current Color: ${color} 📋 Copy HEX`;
+            }, 2000);
+        });
+
+        // Initial render
+        renderTools();
     </script>
 </body>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDBpu9EUDVGYUgrWa3SZR-WSrfp_dI1moQ",
+    authDomain: "abubakar-design-hub.firebaseapp.com",
+    projectId: "abubakar-design-hub",
+    storageBucket: "abubakar-design-hub.firebasestorage.app",
+    messagingSenderId: "133547256107",
+    appId: "1:133547256107:web:7712b570a068bbd1b07d6e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+
+  window.handleLogin = () => {
+    const email = document.getElementById('user-email').value;
+    const pass = document.getElementById('user-pass').value;
+    signInWithEmailAndPassword(auth, email, pass)
+      .then(() => { alert("Login Success!"); location.reload(); })
+      .catch((error) => alert("Error: " + error.message));
+  };
+
+  window.handleSignup = () => {
+    const email = document.getElementById('user-email').value;
+    const pass = document.getElementById('user-pass').value;
+    createUserWithEmailAndPassword(auth, email, pass)
+      .then(() => { alert("Account Created! Now Login."); })
+      .catch((error) => alert("Error: " + error.message));
+  };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<div id="canvas-container" style="width: 100%; height: 450px; margin-top: 20px; background: #000; display: flex; justify-content: center; align-items: center;"></div>
+
+<script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, 450);
+    renderer.setClearColor(0x000000, 1);
+    container.appendChild(renderer.domElement);
+
+    // 1. Black Cube with Neon Edges
+    const geometry = new THREE.BoxGeometry(3.5, 3.5, 3.5);
+    const cube = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1 }));
+    cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: 0x00ffff })));
+    scene.add(cube);
+
+    // 2. 3000 Particles (Sitare)
+    const pCount = 6000;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for(let i=0; i<pCount*3; i++) { pPos[i] = (Math.random() - 0.5) * 15; }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 0.03, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(particles);
+
+    // 3. Lights & Animation
+    scene.add(new THREE.PointLight(0xffffff, 10, 50), new THREE.AmbientLight(0xffffff, 0.5));
+    camera.position.z = 8;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        particles.rotation.y += 0.001; // Sitaron ki movement
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('mousemove', (e) => {
+        cube.rotation.y = (e.clientX / window.innerWidth) * Math.PI;
+        cube.rotation.x = (e.clientY / window.innerHeight) * Math.PI;
+    });
+        </script>
 </html>
